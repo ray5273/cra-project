@@ -11,3 +11,5 @@
 
 # 코드 커버리지 측정 화면
 ![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
