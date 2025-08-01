@@ -1,7 +1,5 @@
-from ..user import User, GOLD,SILVER,NORMAL, MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY
-import sys
-import pytest
-
+from mission2.src.grade_policy import LegacyGradePolicy
+from mission2.src.user import User, MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY
 monday_str = "monday"
 tuesday_str = "tuesday"
 wednesday_str = "wednesday"
@@ -10,42 +8,47 @@ friday_str = "friday"
 saturday_str = "saturday"
 sunday_str = "sunday"
 
+def generate_point(user,target_point):
+    for _ in range(target_point):
+        user.add_attendance_data(monday_str)
+
 def test_get_grade_gold():
     # Given : testuser score is 50 (minimum score of gold)
     test_user_name = "testuser"
     test_user_id = 1234
     user = User(test_user_name,test_user_id)
-    user._points = 50
+    generate_point(user,50)
 
     # When : get_grade() is called
     grade = user.get_grade()
 
     # Then : grade is GOLD
-    assert grade == GOLD
+    assert grade == LegacyGradePolicy.GOLD
 
 def test_get_grade_silver():
     # Given : testuser score is 30 (miminum score of silver)
     test_user_name = "testuser"
     test_user_id = 1234
     user = User(test_user_name,test_user_id)
-    user._points = 30
+    generate_point(user,30)
 
     # When : get_grade() is called
     grade = user.get_grade()
+
     # Then : grade is SILVER
-    assert grade == SILVER
+    assert grade == LegacyGradePolicy.SILVER
 
 def test_get_grade_normal():
     # Given : testuser score is under 30
     test_user_name = "testuser"
     test_user_id = 1234
     user = User(test_user_name,test_user_id)
-    user._points = 29
+    generate_point(user,29)
 
     # When : get_grade() is called
     grade = user.get_grade()
     # Then : grade is NORMAL
-    assert grade == NORMAL
+    assert grade == LegacyGradePolicy.NORMAL
 
 
 
@@ -290,7 +293,7 @@ def test_is_remove_candidate_false_over_silver_grade():
     test_user_name = "testuser"
     test_user_id = 1234
     user = User(test_user_name, test_user_id)
-    user._points = 30
+    generate_point(user, 30)
     user.add_attendance_data(monday_str)
     user.add_attendance_data(tuesday_str)
     user.add_attendance_data(thursday_str)
